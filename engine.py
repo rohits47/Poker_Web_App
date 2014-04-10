@@ -43,13 +43,16 @@ class Player:
 	def setHand(self,hand):
 		self.hand = hand
 
+	def resetForNewHand(self):
+		self.lastAction = ""
+		self.currentBet = 0
+
 
 # the "engine" that drives the game, handles all other model objects
 class Table:
 	def __init__(self):
-		# list of player objects playing at this table
-		self.players = []
-		self.waitingPlayers = []
+		self.allPlayers = [] # list of all player objects playing at this table
+		self.currentPlayers = [] # The players in the current hand
 		self.deck = Deck()
 		self.openCards = []
 		self.pot = 0
@@ -61,21 +64,27 @@ class Table:
 		self.maximumBuyin = 200
 
 	def addPlayer(self,player):
-		self.players.append(player)
+		self.allPlayers.append(player) # player will be dealt in next hand
+
+	def resetForNewHand(self):
+		pass
+		# clear pot, clear hands, reset deck, reset players, reset positions
 
 	def dealHands(self):
-		for player in self.players:
+		for player in self.allPlayers:
 			player.setHand(self.deck.getCard(),self.deck.getCard())
 
 	def runRoundOfBetting(self):
 		pass
 		# prompt player starting with person past big blind
+		# if player folds, remove from currentPlayers
 
 	def promptPlayerForAction(self,player):
 		pass
 
 	def runTable(self):
-		if len(players) > 2:
+		if len(self.allPlayers) > 2:
+			pass
 			# deal to all players
 			# prompt each player to call, raise, or fold in order
 			# after last person has checked/called/folded, flop and repeat

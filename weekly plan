@@ -2,14 +2,14 @@ weekly plan
 
 1. Basic models/design 
 	- player, deck, card, table objects
-	- all necessary fields sharded across objects appropriately
+	- all necessary fields across objects
 	- basic data manipulation methods
 	- method stubs for functionality to actually run a game
 2. Basic GUI/Be able to run a game
 	- text based output to web page
-	- allow player to enter and post data via webpage
+	- allow player to enter and post data via web page
 	- game should run to completion, i.e be able to play complete poker game
 3. Complete GUI
-	- more graphics (card graphics, etc.)
+	- more graphics (card graphics, table background, etc.)
 	- AJAX for posting bets, calling, updating with other player actions, etc.
 4. Multiple table support, database and other extras/fleshing out details
