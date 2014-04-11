@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 @app.route('/', methods=['POST', 'GET'])
 def index():
 	d = Deck()
-	return "This is the poker home page." + str(d)
+	return "This is the poker home page."
 
 if __name__ == '__main__':
 	app.run(debug=True)
