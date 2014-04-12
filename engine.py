@@ -47,6 +47,10 @@ class Player:
 	def setHand(self,hand):
 		self.hand = hand
 
+	def makeBet(self,bet):
+		self.stack -= bet
+		self.currentBet += bet
+
 	def reset(self):
 		del self.hand[:] # throw away player's hand
 		self.lastAction = ""
@@ -71,6 +75,8 @@ class Table:
 		self.openCards = []
 		self.pot = 0
 		self.dealerPosition = 0 # index in the player array
+		self.smallBlindPosition = 1
+		self.bigBlindPosition = 2
 		self.actionPosition = 0 # index in the player array
 		self.round = 0 # the current round of betting (0=preflop,1 = preturn,2=preriver,3=postriver)
 		self.bigBlind = 2 # amount to be posted for big blind
@@ -104,6 +110,12 @@ class Table:
 		position += 1
 		return position % listLength
 
+	def incrementDealerPosition(self):
+		self.dealerPosition = self.incrementPosition(self.dealerPosition,len(self.currentPlayers))
+		self.smallBlindPosition = self.incrementPosition(self.smallBlindPosition,len(self.currentPlayers))
+		self.bigBlindPosition = self.incrementPosition(self.bigBlindPosition,len(self.currentPlayers))
+
+
 	# reset for new hand (increment dealer and blind positions)
 	def reset(self):
 		self.pot = 0
@@ -113,35 +125,31 @@ class Table:
 		self.deck.reset()
 		for player in self.allPlayers:
 			player.reset()
-		self.setCurrentPlayers() # deal in all players seated at table
-		self.incrementPosition(self.dealerPosition,len(self.currentPlayers))
+		# set current players and dealer pos will be done at start of hand in case people join between hands
+		# self.setCurrentPlayers() # deal in all players seated at table
+		# self.incrementDealerPosition() # moves blinds appropriately
 		# clear pot, clear hands, reset deck, reset players, reset positions
 
 	def dealHands(self):
-		for player in self.allPlayers:
+		for player in self.currentPlayers:
 			player.setHand(self.deck.getCard(),self.deck.getCard())
-
-	def runRoundOfBetting(self):
-		# prompt player starting with person past big blind
-		# if player folds, remove from currentPlayers
-		if self.round == 0:
-			pass
-			# start with person past big blind
-		else:
-			pass
-			# start with small blind
-		# finishing round
-		# set all players current bet to 0 for next round
-
-	def promptPlayerForAction(self,player):
-		pass
 
 	# copies references to Players currently in allPlayers to a new list, currentPlayers. changes to player objects (i.e stack) are mirrored in the allPlayers list.
 	def setCurrentPlayers(self):
 		self.currentPlayers = copy.copy(self.allPlayers)
 
+	def playerBet(self,player,bet):
+		player.makeBet(bet)
+		self.pot += bet
+
+	# set players in hand, post small and big blind, deal cards, and set actionPosition. users will drive input to process actions in action order
 	def startHand(self):
 		self.setCurrentPlayers() # set players for this hand
+		self.incrementDealerPosition() # move dealer for this hand
+		self.currentPlayers[self.smallBlindPosition].bet(self.bigBlind/2)
+		self.currentPlayers[self.bigBlindPosition].bet(self.bigBlind/2)
+		self.dealHands()
+		self.actionPosition = self.incrementPosition(self.bigBlindPosition,len(self.currentPlayers))
 		# pre-deal action: post blinds
 		pass
 
@@ -149,30 +157,20 @@ class Table:
 	def processPlayerAction(self,player,action,previousBet, bet = 0):
 		player.lastAction = action # common no matter what the action is
 		if action == "fold":
-			# remove the player from the current hand (self.currentPlayers). no need to worry about destroying hand cards, will be destroyed at end of hand anyway
 			self.currentPlayers.remove(player)
 		elif action == "call":
-			player.currentBet = previousBet - player.currentBet
-			self.pot += player.currentBet
-			pass
+			bet = previousBet - player.currentBet
+			self.playerBet(player,bet)
 		elif action == "raise":
-			pass
+			self.playerBet(player,bet)
 		elif action == "check":
+			# not sure what there is to do here besides set previous bet
 			pass
 		elif action == "allin":
-			pass
+			self.playerBet(player,player.stack)
 		else:
 			# action not recognized/not valid
 			pass
-
-
-	def runTable(self):
-		self.startHand()
-		while len(self.allPlayers) > 1:
-			self.dealHands()
-			# prompt each player to call, raise, or fold in order
-			self.runRoundOfBetting()
-			# after last person has checked/called/folded, flop and repeat
 
 
 class HandComparator: # will hold logic for comparing players hands, see which hand is stronger according to poker rules

@@ -41,6 +41,21 @@ class PokerTestCase(unittest.TestCase):
 		pos = self.table.incrementPosition(pos,4) # should rollover to beginning index
 		self.assertEqual(pos,0)
 
+	# verify that hand starts in appropriate state for players and hands
+	# tests table.startHand()
+	def test_handStartConditions(self):
+		pass
+
+	# test that betting continues and ends properly in all scenarios (folds all around, check all around, raise all around, and all combinations thereof)
+	# tests table.processPlayerAction() over multiple players
+	def test_roundBetting(self):
+		pass
+
+	# verify that player's actions are processed appropriately
+	# tests table.processPlayerAction internally
+	def test_processPlayerAction(self):
+		pass
+
 
 if __name__ == '__main__':
 	unittest.main()
