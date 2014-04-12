@@ -6,8 +6,8 @@ from engine import Table,Player,Deck
 class PokerTestCase(unittest.TestCase):
 	def setUp(self):
 		self.table = Table()
-		self.table.addPlayer(Player("rohit"))
-		self.table.addPlayer(Player("bhargava"))
+		self.table.addPlayer("rohit")
+		self.table.addPlayer("bhargava")
 
 	def tearDown(self):
 		self.table.reset()
@@ -26,15 +26,20 @@ class PokerTestCase(unittest.TestCase):
 		print "testing currentPlayers list:"
 		self.table.setCurrentPlayers()
 		self.assertEqual(self.table.allPlayers, self.table.currentPlayers)
-		self.table.currentPlayers[0].stack = 100 # alter player object
-		self.table.addPlayer(Player("ishan")) # alter main list
+		self.table.currentPlayers[0].stack += 100 # alter player object
+		self.table.addPlayer("ishan") # alter main list
 		self.assertEqual(self.table.allPlayers[0],self.table.currentPlayers[0]) # make sure currentPlayers holds references
 		self.assertNotEqual(self.table.allPlayers, self.table.currentPlayers)
 
-	# verify that table runs a game properly
-	def test_runTable(self):
-		print "testing runTable:"
-		print self.table
+	# verify that positions increment and overrun properly
+	def test_incrementPosition(self):
+		print "testing incrementPosition:"
+		pos = 3
+		pos = self.table.incrementPosition(pos,6)
+		self.assertEqual(pos,4)
+		pos = 3
+		pos = self.table.incrementPosition(pos,4) # should rollover to beginning index
+		self.assertEqual(pos,0)
 
 
 if __name__ == '__main__':

@@ -37,9 +37,9 @@ class Deck:
 
 # player at a table, doesn't include database level info such as passwords, etc.
 class Player:
-	def __init__(self,name):
+	def __init__(self,name,stack):
 		self.name = name
-		self.stack = 0
+		self.stack = stack
 		self.hand = []
 		self.currentBet = 0
 		self.lastAction = "" # last action is check, raise, call, fold, or empty if first round
@@ -84,36 +84,37 @@ class Table:
 		retlist.append("deck size: " + str(self.deck.size()))
 		retlist.append("open cards: " + str(self.openCards))
 		retlist.append("pot: " + str(self.pot))
-		retlist.append("action postion: " + str(self.actionPosition))
+		retlist.append("dealer position: " + str(self.dealerPosition))
+		retlist.append("action position: " + str(self.actionPosition))
 		retlist.append("round: " + str(self.round))
 		# retlist.append("" + str(self.bigBlind))
 		# retlist.append("" + str(self.minimumBuyin))
 		# retlist.append("" + str(self.maximumBuyin))
 		return ', \n'.join(retlist)
 
-
 	def addPlayer(self,player):
-		self.allPlayers.append(player) # player will be dealt in next hand
+		self.allPlayers.append(Player(player,self.maximumBuyin)) # player will be dealt in next hand
 
 	# rotate list so dealer is first position in list
 	# def moveDealerPosition(self):
 	# 	self.allPlayers.append(self.allPlayers.pop())
 
+	# returns new position given position, when incrementing on a list of given length
+	def incrementPosition(self,position,listLength):
+		position += 1
+		return position % listLength
+
 	# reset for new hand (increment dealer and blind positions)
 	def reset(self):
 		self.pot = 0
 		self.round = 0
-		del self.openCards[:]
-		self.dealerPosition += 1
-		if len(self.allPlayers) > 0:
-			self.dealerPosition = self.dealerPosition % len(self.allPlayers)
-		else:
-			self.dealerPosition = 0
+		del self.openCards[:] # clear open cards
 		self.actionPosition = 0
 		self.deck.reset()
 		for player in self.allPlayers:
 			player.reset()
-		self.setCurrentPlayers()
+		self.setCurrentPlayers() # deal in all players seated at table
+		self.incrementPosition(self.dealerPosition,len(self.currentPlayers))
 		# clear pot, clear hands, reset deck, reset players, reset positions
 
 	def dealHands(self):
@@ -129,19 +130,41 @@ class Table:
 		else:
 			pass
 			# start with small blind
+		# finishing round
+		# set all players current bet to 0 for next round
 
 	def promptPlayerForAction(self,player):
 		pass
 
-	# copies references to Players currently in allPlayers to a new list, currentPlayers
+	# copies references to Players currently in allPlayers to a new list, currentPlayers. changes to player objects (i.e stack) are mirrored in the allPlayers list.
 	def setCurrentPlayers(self):
 		self.currentPlayers = copy.copy(self.allPlayers)
 
 	def startHand(self):
-		# pre-deal action: post blinds
 		self.setCurrentPlayers() # set players for this hand
-
+		# pre-deal action: post blinds
 		pass
+
+	# optional bet parameter (if folding or calling, bet is optional)
+	def processPlayerAction(self,player,action,previousBet, bet = 0):
+		player.lastAction = action # common no matter what the action is
+		if action == "fold":
+			# remove the player from the current hand (self.currentPlayers). no need to worry about destroying hand cards, will be destroyed at end of hand anyway
+			self.currentPlayers.remove(player)
+		elif action == "call":
+			player.currentBet = previousBet - player.currentBet
+			self.pot += player.currentBet
+			pass
+		elif action == "raise":
+			pass
+		elif action == "check":
+			pass
+		elif action == "allin":
+			pass
+		else:
+			# action not recognized/not valid
+			pass
+
 
 	def runTable(self):
 		self.startHand()
