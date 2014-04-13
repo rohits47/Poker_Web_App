@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 @app.route('/', methods=['POST', 'GET'])
 def index():
 	d = Deck()
-	if request.method == "POST":
+	if request.method == "GET":
 		pass
 	return "This is the poker home page."
 

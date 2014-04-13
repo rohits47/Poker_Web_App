@@ -7,10 +7,12 @@ class PokerTestCase(unittest.TestCase):
 	def setUp(self):
 		self.table = Table()
 		self.table.addPlayer("rohit")
-		self.table.addPlayer("bhargava")
-
-	def tearDown(self):
-		self.table.reset()
+		self.table.addPlayer("akhil")
+		self.table.addPlayer("anshuman")
+		self.table.addPlayer("suket")
+	
+	# def tearDown(self):
+	# 	self.table = Table()
 
 	# verify starting state of table/game
 	def test_startingState(self):
@@ -55,6 +57,14 @@ class PokerTestCase(unittest.TestCase):
 	# tests table.processPlayerAction internally
 	def test_processPlayerAction(self):
 		pass
+
+	def test_fullHand(self):
+		print self.table
+		self.table.startHand()
+		self.table.showFlop()
+		print self.table
+
+		
 
 
 if __name__ == '__main__':

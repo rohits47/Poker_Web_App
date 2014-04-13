@@ -63,7 +63,7 @@ class Player:
 		retlist.append("current bet: " + str(self.currentBet))
 		retlist.append("last action: " + str(self.lastAction))
 		retlist.append("stack: " + str(self.stack))
-		return ', '.join(retlist)
+		return ', '.join(retlist) + '\n'
 
 
 # the "engine" that drives the game, handles all other model objects
@@ -84,6 +84,7 @@ class Table:
 		self.maximumBuyin = 200
 
 	def __repr__(self):
+		# return self.tableConcise()
 		retlist = []
 		retlist.append("allPlayers: " + str(self.allPlayers))
 		retlist.append("currentPlayers: " + str(self.currentPlayers))
@@ -98,8 +99,26 @@ class Table:
 		# retlist.append("" + str(self.maximumBuyin))
 		return ', \n'.join(retlist)
 
+	def tableConcise(self):
+		retlist = dict()
+		for player in self.allPlayers:
+			retlist[player.name] = player.hand
+		# retlist["table: "] = self.openCards
+		return str(retlist) + " table: " + str(self.openCards)
+
 	def addPlayer(self,player):
 		self.allPlayers.append(Player(player,self.maximumBuyin)) # player will be dealt in next hand
+
+	def showFlop(self):
+		self.openCards.append(self.deck.getCard())
+		self.openCards.append(self.deck.getCard())
+		self.openCards.append(self.deck.getCard())
+
+	def showTurn(self):
+		self.openCards.append(self.deck.getCard())
+
+	def showRiver(self):
+		self.openCards.append(self.deck.getCard())
 
 	# rotate list so dealer is first position in list
 	# def moveDealerPosition(self):
@@ -132,7 +151,7 @@ class Table:
 
 	def dealHands(self):
 		for player in self.currentPlayers:
-			player.setHand(self.deck.getCard(),self.deck.getCard())
+			player.setHand([self.deck.getCard(),self.deck.getCard()])
 
 	# copies references to Players currently in allPlayers to a new list, currentPlayers. changes to player objects (i.e stack) are mirrored in the allPlayers list.
 	def setCurrentPlayers(self):
@@ -146,12 +165,14 @@ class Table:
 	def startHand(self):
 		self.setCurrentPlayers() # set players for this hand
 		self.incrementDealerPosition() # move dealer for this hand
-		self.currentPlayers[self.smallBlindPosition].bet(self.bigBlind/2)
-		self.currentPlayers[self.bigBlindPosition].bet(self.bigBlind/2)
+		self.currentPlayers[self.smallBlindPosition].makeBet(self.bigBlind/2)
+		self.currentPlayers[self.bigBlindPosition].makeBet(self.bigBlind)
 		self.dealHands()
 		self.actionPosition = self.incrementPosition(self.bigBlindPosition,len(self.currentPlayers))
-		# pre-deal action: post blinds
-		pass
+
+	def endBettingRound(self):
+		for player in self.currentPlayers:
+			player.lastAction = "" # clears lastAction
 
 	# optional bet parameter (if folding or calling, bet is optional)
 	def processPlayerAction(self,player,action,previousBet, bet = 0):
