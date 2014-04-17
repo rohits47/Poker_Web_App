@@ -9,3 +9,27 @@ Now that the design was settled, the next thing to figure out was program flow. 
 ## Week 2
 
 Turns out side pots are actually really hard, so I'm going to gloss over that for now and just say everything goes into the main pot, and best hand wins and gets the main pot.
+
+Filled out all the stubbed functionality methods from last week. Changed a bit of the flow, since I realized that there's no way to have the main run loop yield to each player, process each player action, and then continue if this is a web app that requires user interaction client-side. Instead, each user action drives the back-end to process that action, and set the game state to accept the next user's action, and end and continue the next round at the appropriate state (like an FSM! might have been easier if I wrote it out like one...). The table starts and the table has an initial state, and once the minimum number of people join, the table starts "running" and keeps running as long as at least 2 people are sitting. The general format of each "loop" is:
+	- start hand (move dealer button, post blinds, deal hand)
+	- pre-flop betting
+	- flop
+	- pre-turn betting
+	- turn
+	- pre-river betting
+	- river
+	- river betting
+	- showdown
+	- end hand
+
+### Showdown evaluator
+The only computationally complex part of the app, the hand evaluator needs to be able to compare two 5-card hands on a scale from high card to straight flush. Some quick searching yielded http://www.suffecool.net/poker/evaluator.html, which gives an efficient way to map each card to a prime number, map each multiplication to a unique unordered 5-card hand (unordered is important since a straight can be in any order on the table)
+
+
+
+future work:
+- side pots
+- antes
+- omaha/multiple flops
+- multiple runs
+- stats (hands won, lost, best hand, largest pot, best laydown, etc.)

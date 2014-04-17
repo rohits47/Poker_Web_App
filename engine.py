@@ -74,6 +74,7 @@ class Table:
 		self.deck = Deck()
 		self.openCards = []
 		self.pot = 0
+		self.previousBet = 2
 		self.dealerPosition = 0 # index in the player array
 		self.smallBlindPosition = 1
 		self.bigBlindPosition = 2
@@ -94,7 +95,8 @@ class Table:
 		retlist.append("dealer position: " + str(self.dealerPosition))
 		retlist.append("action position: " + str(self.actionPosition))
 		retlist.append("round: " + str(self.round))
-		# retlist.append("" + str(self.bigBlind))
+		retlist.append("sb pos: " + str(self.smallBlindPosition))
+		retlist.append("bb pos: " + str(self.bigBlindPosition))
 		# retlist.append("" + str(self.minimumBuyin))
 		# retlist.append("" + str(self.maximumBuyin))
 		return ', \n'.join(retlist)
@@ -107,7 +109,9 @@ class Table:
 		return str(retlist) + " table: " + str(self.openCards)
 
 	def addPlayer(self,player):
-		self.allPlayers.append(Player(player,self.maximumBuyin)) # player will be dealt in next hand
+		p = Player(player,self.maximumBuyin)
+		self.allPlayers.append(p) # player will be dealt in next hand
+		return p
 
 	def showFlop(self):
 		self.openCards.append(self.deck.getCard())
@@ -135,13 +139,14 @@ class Table:
 		self.bigBlindPosition = self.incrementPosition(self.bigBlindPosition,len(self.currentPlayers))
 
 
-	# reset for new hand (increment dealer and blind positions)
+	# reset for new hand (increment dealer and blind positions, remove empty stack players)
 	def reset(self):
 		self.pot = 0
 		self.round = 0
 		del self.openCards[:] # clear open cards
 		self.actionPosition = 0
 		self.deck.reset()
+		self.allPlayers = [p for p in self.allPlayers if p.stack > 0] # remove empty stack players
 		for player in self.allPlayers:
 			player.reset()
 		# set current players and dealer pos will be done at start of hand in case people join between hands
@@ -165,27 +170,41 @@ class Table:
 	def startHand(self):
 		self.setCurrentPlayers() # set players for this hand
 		self.incrementDealerPosition() # move dealer for this hand
-		self.currentPlayers[self.smallBlindPosition].makeBet(self.bigBlind/2)
-		self.currentPlayers[self.bigBlindPosition].makeBet(self.bigBlind)
+		self.playerBet(self.currentPlayers[self.smallBlindPosition],self.bigBlind/2)
+		self.playerBet(self.currentPlayers[self.bigBlindPosition],self.bigBlind)
 		self.dealHands()
 		self.actionPosition = self.incrementPosition(self.bigBlindPosition,len(self.currentPlayers))
+
+	# winning player gets pot, check if any player is now out of the hand/table and remove them from the table, and reset for next hand
+	def endHand(self,winningPlayer):
+		winningPlayer.stack += self.pot
+		self.reset() # cleanup state for next hand
 
 	def endBettingRound(self):
 		for player in self.currentPlayers:
 			player.lastAction = "" # clears lastAction
+			player.currentBet = 0
+		self.previousBet = 0
+		self.actionPosition = self.incrementPosition(self.dealerPosition,len(self.currentPlayers))
+		self.round += 1 # increment round
 
 	# optional bet parameter (if folding or calling, bet is optional)
-	def processPlayerAction(self,player,action,previousBet, bet = 0):
+	def processPlayerAction(self,player,action,bet = 0):
 		player.lastAction = action # common no matter what the action is
+		self.actionPosition = self.incrementPosition(self.actionPosition,len(self.currentPlayers))
 		if action == "fold":
+			# don't change previousBet
 			self.currentPlayers.remove(player)
 		elif action == "call":
-			bet = previousBet - player.currentBet
+			# don't change previous bet
+			bet = self.previousBet - player.currentBet
 			self.playerBet(player,bet)
+			return bet
 		elif action == "raise":
 			self.playerBet(player,bet)
+			self.previousBet += bet
 		elif action == "check":
-			# not sure what there is to do here besides set previous bet
+			# not sure what there is to do here
 			pass
 		elif action == "allin":
 			self.playerBet(player,player.stack)
@@ -195,4 +214,26 @@ class Table:
 
 
 class HandComparator: # will hold logic for comparing players hands, see which hand is stronger according to poker rules
+# uses logic from http://www.suffecool.net/poker/evaluator.html
+	def __init__(self,hand1,hand2,openCards):
+		self.openCards = openCards
+
+	def determineWinningHand(self):
+		pass
+
+	def isFlush(self,hand):
+		rankList = []
+		pass
+
+
 	pass
+
+
+
+
+
+
+
+
+
+

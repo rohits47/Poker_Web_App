@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Poker</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    </head>
+    <body>
+    <form action="" method="post" id="pokerform">
+        <p>Your hand: {{ player.hand }}</p>
+        <p>Your current bet: {{ player.currentBet }}</p>
+        <p>Table pot: {{ table.pot }}</p>
+        <p>Open cards: {{table.openCards}}</p>
+
+        <p>Current round: {{table.round}}</p>
+
+        {% if table.round > 0 %}
+        {% for player in table.currentPlayers %}
+        <p>{{player.name}} action: {{player.lastAction}}</p>
+        {% endfor %}
+        {% endif %}
+
+        <label for="bet" class="required">Bet (0 to call)</label>
+        <input type="text" name="bet" id="bet" value="{{table.bigBlind}}" tabindex="1"> <br />
+
+        <input name="submit" type="submit" value="Submit" />
+    </form>
+    </body>
+</html>

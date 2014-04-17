@@ -10,6 +10,9 @@ class PokerTestCase(unittest.TestCase):
 		self.table.addPlayer("akhil")
 		self.table.addPlayer("anshuman")
 		self.table.addPlayer("suket")
+		self.table.addPlayer("ray")
+		self.table.addPlayer("siddharth")
+		self.table.addPlayer("pete")
 	
 	# def tearDown(self):
 	# 	self.table = Table()
@@ -46,6 +49,9 @@ class PokerTestCase(unittest.TestCase):
 	# verify that hand starts in appropriate state for players and hands
 	# tests table.startHand()
 	def test_handStartConditions(self):
+		# test pre-start conditions
+		for player in self.table.allPlayers:
+			self.assertEqual(player.currentBet,0,"player bet not set to 0 before hand starts")
 		pass
 
 	# test that betting continues and ends properly in all scenarios (folds all around, check all around, raise all around, and all combinations thereof)
@@ -56,13 +62,30 @@ class PokerTestCase(unittest.TestCase):
 	# verify that player's actions are processed appropriately
 	# tests table.processPlayerAction internally
 	def test_processPlayerAction(self):
-		pass
+		print "testing processPlayerAction"
+		self.table.startHand()
+		# print self.table
+		lastActionPosition = self.table.actionPosition
+		while self.table.actionPosition != self.table.bigBlindPosition:
+			self.table.processPlayerAction(self.table.currentPlayers[self.table.actionPosition],"call")
+		self.table.processPlayerAction(self.table.currentPlayers[self.table.actionPosition],"check")
+		self.table.endBettingRound()
+		self.assertEqual(self.table.pot,14)
+		self.assertEqual(self.table.actionPosition,self.table.smallBlindPosition)
+		# print self.table
 
 	def test_fullHand(self):
-		print self.table
+		print "testing test_fullHand"
+		# print self.table
 		self.table.startHand()
 		self.table.showFlop()
+		lastActionPosition = self.table.actionPosition
+		while self.table.actionPosition != self.table.bigBlindPosition:
+			self.table.processPlayerAction(self.table.currentPlayers[self.table.actionPosition],"call")
+		self.table.processPlayerAction(self.table.currentPlayers[self.table.actionPosition],"check")
+		self.table.endBettingRound()
 		print self.table
+		# print self.table
 
 		
 
