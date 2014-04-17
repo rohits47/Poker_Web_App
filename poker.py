@@ -20,11 +20,16 @@ currPlayer = None
 def index():
 	if request.method == "POST":
 		if table.round == 0:
-			currPlayer = table.addPlayer(request.form['player']) # add player with given name
+			currPlayer = table.addPlayer("player") # add player with given name
 			table.startHand()
 			table.endBettingRound()
 			return render_template("game.html",player=currPlayer,table=table)
 		if table.round == 1:
+			currPlayer = table.addPlayer("player") # add player with 
+			table.showFlop()
+			table.endBettingRound()
+			return render_template("game.html",player=currPlayer,table=table)
+		if table.round == 2:
 			currPlayer = table.addPlayer("player") # add player with 
 			table.startHand()
 			table.showFlop()
