@@ -23,7 +23,11 @@ Filled out all the stubbed functionality methods from last week. Changed a bit o
 	- end hand
 
 ### Showdown evaluator
-The only computationally complex part of the app, the hand evaluator needs to be able to compare two 5-card hands on a scale from high card to straight flush. Some quick searching yielded http://www.suffecool.net/poker/evaluator.html, which gives an efficient way to map each card to a prime number, map each multiplication to a unique unordered 5-card hand (unordered is important since a straight can be in any order on the table)
+The only computationally complex part of the app, the hand evaluator needs to be able to compare two 5-card hands on a scale from high card to straight flush. Some quick searching yielded http://www.suffecool.net/poker/evaluator.html, which gives an efficient way to map each card to a prime number, map each multiplication to a unique unordered 5-card hand (unordered is important since a straight can be in any order on the table).
+
+## Week 3
+
+Didn't finish the hand comparator last week, so I'm finishing that this week along with a proper working GUI. For the comparator, I think I'm gonna try test-drive development properly, both to see what it's like and because it's fairly straightforward with the comparator.
 
 
 

@@ -11,6 +11,7 @@
     <form action="" method="post" id="pokerform">
         <p>Your hand: {{ player.hand }}</p>
         <p>Your current bet: {{ player.currentBet }}</p>
+        <p>Your stack: {{ player.stack }}</p>
         <p>Table pot: {{ table.pot }}</p>
         <p>Open cards: {{table.openCards}}</p>
 
@@ -19,6 +20,9 @@
         {% if table.round > 0 %}
         {% for player in table.currentPlayers %}
         <p>{{player.name}} action: {{player.lastAction}}</p>
+        {% if table.round == 4 %}
+        <p>{{player.name}} hand: {{player.hand}}</p>
+        {%endif%}
         {% endfor %}
         {% endif %}
 

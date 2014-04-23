@@ -20,20 +20,41 @@ currPlayer = None
 def index():
 	if request.method == "POST":
 		if table.round == 0:
-			currPlayer = table.addPlayer("player") # add player with given name
+			currPlayer = table.addPlayer(request.form['player']) # add player with given name
 			table.startHand()
+			for player in table.currentPlayers:
+				table.processPlayerAction(player,"call")
 			table.endBettingRound()
 			return render_template("game.html",player=currPlayer,table=table)
 		if table.round == 1:
-			currPlayer = table.addPlayer("player") # add player with 
+			currPlayer = table.currentPlayers[-1] # add player with 
+			table.processPlayerAction(currPlayer,"raise",request.form['bet'])
 			table.showFlop()
+			# return request.form['bet']
+			for player in table.currentPlayers:
+				table.processPlayerAction(player,"call")
 			table.endBettingRound()
 			return render_template("game.html",player=currPlayer,table=table)
 		if table.round == 2:
-			currPlayer = table.addPlayer("player") # add player with 
-			table.startHand()
-			table.showFlop()
+			currPlayer = table.currentPlayers[-1] # add player with 
+			table.processPlayerAction(currPlayer,"raise",request.form['bet'])
+			table.showTurn()
+			for player in table.currentPlayers:
+				table.processPlayerAction(player,"call")
 			table.endBettingRound()
+			return render_template("game.html",player=currPlayer,table=table)
+		if table.round == 3:
+			currPlayer = table.currentPlayers[-1] # add player with 
+			table.processPlayerAction(currPlayer,"raise",request.form['bet'])
+			table.showRiver()
+			for player in table.currentPlayers:
+				table.processPlayerAction(player,"call")
+			table.endBettingRound()
+			return render_template("game.html",player=currPlayer,table=table)
+		if table.round == 4:
+			currPlayer = table.currentPlayers[-1] # add player with 
+			# table.reset()
+			# table.startHand()
 			return render_template("game.html",player=currPlayer,table=table)
 	return render_template("index.html")
 

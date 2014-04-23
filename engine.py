@@ -1,5 +1,6 @@
 import random
 import copy
+import evaluator
 
 class Card:
 	rankString = ["Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"]
@@ -33,6 +34,12 @@ class Deck:
 			for suit in xrange(1,5):
 				self.deck.append(Card(rank,suit))
 		random.shuffle(self.deck)
+
+	# the following methods are for testing only
+
+	def getSpecificCard(self,rank,suit):
+		card = [x for x in self.deck if x.rank == rank and x.suit == suit]
+		return card[0] # only one card for the given rank + suit
 
 
 # player at a table, doesn't include database level info such as passwords, etc.
@@ -182,7 +189,7 @@ class Table:
 
 	def endBettingRound(self):
 		for player in self.currentPlayers:
-			player.lastAction = "" # clears lastAction
+			player.lastAction = "call" # clears lastAction
 			player.currentBet = 0
 		self.previousBet = 0
 		self.actionPosition = self.incrementPosition(self.dealerPosition,len(self.currentPlayers))
@@ -191,6 +198,7 @@ class Table:
 	# optional bet parameter (if folding or calling, bet is optional)
 	def processPlayerAction(self,player,action,bet = 0):
 		player.lastAction = action # common no matter what the action is
+		bet = int(bet)
 		self.actionPosition = self.incrementPosition(self.actionPosition,len(self.currentPlayers))
 		if action == "fold":
 			# don't change previousBet
@@ -211,29 +219,3 @@ class Table:
 		else:
 			# action not recognized/not valid
 			pass
-
-
-class HandComparator: # will hold logic for comparing players hands, see which hand is stronger according to poker rules
-# uses logic from http://www.suffecool.net/poker/evaluator.html
-	def __init__(self,hand1,hand2,openCards):
-		self.openCards = openCards
-
-	def determineWinningHand(self):
-		pass
-
-	def isFlush(self,hand):
-		rankList = []
-		pass
-
-
-	pass
-
-
-
-
-
-
-
-
-
-

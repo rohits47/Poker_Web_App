@@ -52,7 +52,7 @@ class PokerTestCase(unittest.TestCase):
 		# test pre-start conditions
 		for player in self.table.allPlayers:
 			self.assertEqual(player.currentBet,0,"player bet not set to 0 before hand starts")
-		pass
+		self.assertEqual(self.table.pot,0)
 
 	# test that betting continues and ends properly in all scenarios (folds all around, check all around, raise all around, and all combinations thereof)
 	# tests table.processPlayerAction() over multiple players
@@ -72,11 +72,12 @@ class PokerTestCase(unittest.TestCase):
 		self.table.endBettingRound()
 		self.assertEqual(self.table.pot,14)
 		self.assertEqual(self.table.actionPosition,self.table.smallBlindPosition)
+		self.assertEqual(self.table.round,1)
 		# print self.table
 
 	def test_fullHand(self):
 		print "testing test_fullHand"
-		# print self.table
+		print self.table
 		self.table.startHand()
 		self.table.showFlop()
 		lastActionPosition = self.table.actionPosition
@@ -84,6 +85,15 @@ class PokerTestCase(unittest.TestCase):
 			self.table.processPlayerAction(self.table.currentPlayers[self.table.actionPosition],"call")
 		self.table.processPlayerAction(self.table.currentPlayers[self.table.actionPosition],"check")
 		self.table.endBettingRound()
+		self.table.showFlop()
+		lastActionPosition = self.table.actionPosition
+		self.table.processPlayerAction(self.table.currentPlayers[self.table.actionPosition],"raise",10)
+		while self.table.actionPosition != lastActionPosition:
+			self.table.processPlayerAction(self.table.currentPlayers[self.table.actionPosition],"call")
+		self.table.endBettingRound()
+		self.table.showTurn()
+		self.table.endBettingRound()
+		self.table.showRiver()
 		print self.table
 		# print self.table
 
