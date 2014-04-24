@@ -76,8 +76,7 @@ def getFlushCards(hand):
 def isStraightFlush(hand):
 	if isFlush(hand):
 		flushCards = getFlushCards(hand)
-		flushCards.sort(key=lambda x:x.rank,reverse=True)
-		return (flushCards[0].rank - flushCards[4].rank) == 4
+		return isStraight(flushCards)
 	return False
 
 def isQuads(hand):
@@ -99,7 +98,13 @@ def isFlush(hand):
 	return suitTuple[1] >= 5
 
 def isStraight(hand):
-	pass
+	rankList = [c.rank for c in hand]
+	for i in range(2,11):
+		# print set(range(i,i+5))
+		# print set(rankList)
+		if set(range(i,i+4)) <= set(rankList):
+			return True
+	return False
 
 def isTriple(hand):
 	rankList = [c.rank for c in hand]

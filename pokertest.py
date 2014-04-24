@@ -77,7 +77,7 @@ class PokerTestCase(unittest.TestCase):
 
 	def test_fullHand(self):
 		print "testing test_fullHand"
-		print self.table
+		# print self.table
 		self.table.startHand()
 		self.table.showFlop()
 		lastActionPosition = self.table.actionPosition
@@ -94,7 +94,7 @@ class PokerTestCase(unittest.TestCase):
 		self.table.showTurn()
 		self.table.endBettingRound()
 		self.table.showRiver()
-		print self.table
+		# print self.table
 		# print self.table
 
 		

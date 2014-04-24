@@ -220,15 +220,35 @@ class Table:
 			# don't change previous bet
 			bet = self.previousBet - player.currentBet
 			self.playerBet(player,bet)
-			return bet
 		elif action == "raise":
 			self.playerBet(player,bet)
 			self.previousBet += bet
-		elif action == "check":
-			# not sure what there is to do here
-			pass
 		elif action == "allin":
 			self.playerBet(player,player.stack)
-		else:
-			# action not recognized/not valid
-			pass
+
+	def processComputerAction(self,player):
+		actionList = ["fold",  "call",  "raise",  "check",  "allin"]
+		if previousBet == 0:
+			actionList.remove("fold") # stupid to fold if no bet
+			actionList.remove("call") # can't call no bet
+			actionList.remove("allin") # just to make a better game
+		if previousBet > 0:
+			actionList.remove("check") # can't check if there's a bet
+			actionList.remove("allin") # just to make a better game
+		action = random.choice(actionList)
+		player.lastAction = action # common no matter what the action is
+		# bet = int(bet)
+		self.actionPosition = self.incrementPosition(self.actionPosition,len(self.currentPlayers))
+		if action == "fold":
+			# don't change previousBet
+			self.currentPlayers.remove(player)
+		elif action == "call":
+			# don't change previous bet
+			bet = self.previousBet - player.currentBet
+			self.playerBet(player,bet)
+		elif action == "raise":
+			self.playerBet(player,bet)
+			self.previousBet += bet
+		elif action == "allin":
+			self.playerBet(player,player.stack)
+		# check action has no action associated

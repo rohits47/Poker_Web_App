@@ -76,23 +76,62 @@ class PokerTestCase(unittest.TestCase):
 
 	def test_straight(self):
 		print "test_straight"
-		pass
+		openCards = []
+		openCards.append(self.deck.getSpecificCard(3,1))
+		openCards.append(self.deck.getSpecificCard(4,1))
+		openCards.append(self.deck.getSpecificCard(5,2)) 
+		openCards.append(self.deck.getSpecificCard(10,0)) 
+		openCards.append(self.deck.getSpecificCard(13,3))
+		self.hand.append(self.deck.getSpecificCard(6,2))
+		self.hand.append(self.deck.getSpecificCard(7,3))
+		self.assertTrue(evaluator.isStraight(openCards+self.hand))
 
 	def test_triple(self):
 		print "test_triple"
-		pass
+		openCards = []
+		openCards.append(self.deck.getSpecificCard(3,1))
+		openCards.append(self.deck.getSpecificCard(4,1))
+		openCards.append(self.deck.getSpecificCard(5,2)) 
+		openCards.append(self.deck.getSpecificCard(10,0)) 
+		openCards.append(self.deck.getSpecificCard(13,3))
+		self.hand.append(self.deck.getSpecificCard(4,2))
+		self.hand.append(self.deck.getSpecificCard(4,3))
+		self.assertTrue(evaluator.isTriple(openCards+self.hand))
 
 	def test_twoPair(self):
 		print "test_twoPair"
-		pass
+		openCards = []
+		openCards.append(self.deck.getSpecificCard(3,1))
+		openCards.append(self.deck.getSpecificCard(4,1))
+		openCards.append(self.deck.getSpecificCard(5,2)) 
+		openCards.append(self.deck.getSpecificCard(10,0)) 
+		openCards.append(self.deck.getSpecificCard(13,3))
+		self.hand.append(self.deck.getSpecificCard(3,2))
+		self.hand.append(self.deck.getSpecificCard(5,3))
+		self.assertTrue(evaluator.isTwoPair(openCards+self.hand))
 
 	def test_onePair(self):
 		print "test_onePair"
-		pass
+		openCards = []
+		openCards.append(self.deck.getSpecificCard(3,1))
+		openCards.append(self.deck.getSpecificCard(4,1))
+		openCards.append(self.deck.getSpecificCard(5,2)) 
+		openCards.append(self.deck.getSpecificCard(10,0)) 
+		openCards.append(self.deck.getSpecificCard(13,3))
+		self.hand.append(self.deck.getSpecificCard(11,2))
+		self.hand.append(self.deck.getSpecificCard(10,3))
+		self.assertTrue(evaluator.isPair(openCards+self.hand))
 
 	def test_highCard(self):
 		print "test_highCard"
-		pass
+		openCards = []
+		openCards.append(self.deck.getSpecificCard(3,1))
+		openCards.append(self.deck.getSpecificCard(4,1))
+		openCards.append(self.deck.getSpecificCard(5,2)) 
+		openCards.append(self.deck.getSpecificCard(10,0)) 
+		openCards.append(self.deck.getSpecificCard(13,3))
+		self.hand.append(self.deck.getSpecificCard(14,2))
+		self.hand.append(self.deck.getSpecificCard(7,3))
 
 
 if __name__ == '__main__':
