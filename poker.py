@@ -14,7 +14,6 @@ table.addPlayer("opponent2")
 table.addPlayer("opponent3")
 table.addPlayer("opponent4")
 table.addPlayer("opponent5")
-currPlayer = None
 
 @app.route('/', methods=['POST', 'GET'])
 def index():

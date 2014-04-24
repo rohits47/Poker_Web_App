@@ -64,7 +64,7 @@ def evaluateHand(hand):
 
 # handOne and handTwo are both 7 cards
 def compareSameHand(handOne,handTwo):
-	pass
+	return 1 # to be implemented later
 
 # assumes a flush exists, will return most common suit by default
 def getFlushCards(hand):

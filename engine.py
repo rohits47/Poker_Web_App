@@ -1,6 +1,7 @@
 import random
 import copy
 import evaluator
+from itertools import izip
 
 class Card:
 	# 14 is ace for comparison simplicity
@@ -68,6 +69,8 @@ class Player:
 		self.hand = hand
 
 	def makeBet(self,bet):
+		if bet > self.stack:
+			bet = self.stack
 		self.stack -= bet
 		self.currentBet += bet
 
@@ -196,7 +199,16 @@ class Table:
 		self.actionPosition = self.incrementPosition(self.bigBlindPosition,len(self.currentPlayers))
 
 	# winning player gets pot, check if any player is now out of the hand/table and remove them from the table, and reset for next hand
-	def endHand(self,winningPlayer):
+	def endHand(self):
+		winningPlayer = self.currentPlayers[0]
+		while len(self.currentPlayers) > 1:
+			print self.currentPlayers
+			winner = evaluator.determineWinningHand(winningPlayer.hand,self.currentPlayers[1].hand,self.openCards)
+			if winner == 1:
+				del self.currentPlayers[1] # remove losing player
+			else:
+				winningPlayer = self.currentPlayers[1]
+				del self.currentPlayers[0] # remove losing player
 		winningPlayer.stack += self.pot
 		self.reset() # cleanup state for next hand
 
@@ -247,6 +259,7 @@ class Table:
 			bet = self.previousBet - player.currentBet
 			self.playerBet(player,bet)
 		elif action == "raise":
+			bet = random.randrange(self.bigBlind,player.stack) # bet a random amount from big blind to all in
 			self.playerBet(player,bet)
 			self.previousBet += bet
 		elif action == "allin":
