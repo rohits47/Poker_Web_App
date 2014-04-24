@@ -28,16 +28,15 @@ def index():
 			return render_template("game.html",player=currPlayer,table=table)
 		if table.round == 1:
 			currPlayer = table.currentPlayers[-1] # add player with 
-			table.processPlayerAction(currPlayer,"raise",request.form['bet'])
+			table.processPlayerAction(currPlayer,"raise",int(request.form['bet']))
 			table.showFlop()
-			# return request.form['bet']
 			for player in table.currentPlayers:
 				table.processPlayerAction(player,"call")
 			table.endBettingRound()
 			return render_template("game.html",player=currPlayer,table=table)
 		if table.round == 2:
 			currPlayer = table.currentPlayers[-1] # add player with 
-			table.processPlayerAction(currPlayer,"raise",request.form['bet'])
+			table.processPlayerAction(currPlayer,"raise",int(request.form['bet']))
 			table.showTurn()
 			for player in table.currentPlayers:
 				table.processPlayerAction(player,"call")
@@ -45,7 +44,7 @@ def index():
 			return render_template("game.html",player=currPlayer,table=table)
 		if table.round == 3:
 			currPlayer = table.currentPlayers[-1] # add player with 
-			table.processPlayerAction(currPlayer,"raise",request.form['bet'])
+			table.processPlayerAction(currPlayer,"raise",int(request.form['bet']))
 			table.showRiver()
 			for player in table.currentPlayers:
 				table.processPlayerAction(player,"call")

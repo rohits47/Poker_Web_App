@@ -10,39 +10,69 @@ class PokerTestCase(unittest.TestCase):
 		self.table.addPlayer("rohit")
 		self.table.addPlayer("opponent")
 		self.deck = self.table.deck
+		# set high and low representatives of each type of hand
+		self.hand = []
+		self.opponentsHand = []
+
+	def tearDown(self):
+		del self.hand[:]
+		del self.opponentsHand[:]
 
 	def test_straightFlush(self):
 		print "test_straightFlush"
-		hand = []
-		opponentsHand = []
 		# straight flush vs. straight flush
-		hand.append(self.deck.getSpecificCard(1,1))
-		hand.append(self.deck.getSpecificCard(13,1))
-		opponentsHand.append(self.deck.getSpecificCard(9,1))
-		opponentsHand.append(self.deck.getSpecificCard(8,1))
 		openCards = []
-		openCards.append(self.deck.getSpecificCard(12,1))
 		openCards.append(self.deck.getSpecificCard(11,1))
+		openCards.append(self.deck.getSpecificCard(12,1))
 		openCards.append(self.deck.getSpecificCard(10,1))
 		openCards.append(self.deck.getSpecificCard(4,2)) # irrelevant card
 		openCards.append(self.deck.getSpecificCard(3,2)) # irrelevant card
-		print hand
-		print opponentsHand
-		print openCards
-		self.table.allPlayers[0].hand = hand
-		self.table.allPlayers[1].hand = opponentsHand
+		self.hand.append(self.deck.getSpecificCard(14,1))
+		self.hand.append(self.deck.getSpecificCard(13,1))
+		self.opponentsHand.append(self.deck.getSpecificCard(9,2))
+		self.opponentsHand.append(self.deck.getSpecificCard(8,2))
+		self.assertTrue(evaluator.isFlush(openCards+self.hand))
+		self.assertTrue(evaluator.isStraightFlush(openCards+self.hand))
+		self.assertEqual(evaluator.determineWinningHand(self.hand,self.opponentsHand,openCards),1)
+		# print self.hand
+		# print self.opponentsHand
+		# print openCards
 
 	def test_quads(self):
 		print "test_quads"
-		pass
+		openCards = []
+		openCards.append(self.deck.getSpecificCard(9,0))
+		openCards.append(self.deck.getSpecificCard(9,1))
+		openCards.append(self.deck.getSpecificCard(10,1)) # irrelevant card
+		openCards.append(self.deck.getSpecificCard(4,2)) # irrelevant card
+		openCards.append(self.deck.getSpecificCard(3,2)) # irrelevant card
+		self.hand.append(self.deck.getSpecificCard(9,2))
+		self.hand.append(self.deck.getSpecificCard(9,3))
+		self.assertTrue(evaluator.isQuads(openCards+self.hand))
 
 	def test_fullHouse(self):
 		print "test_fullHouse"
-		pass
+		openCards = []
+		openCards.append(self.deck.getSpecificCard(9,0))
+		openCards.append(self.deck.getSpecificCard(9,1))
+		openCards.append(self.deck.getSpecificCard(10,1)) 
+		openCards.append(self.deck.getSpecificCard(4,2)) # irrelevant card
+		openCards.append(self.deck.getSpecificCard(3,2)) # irrelevant card
+		self.hand.append(self.deck.getSpecificCard(9,2))
+		self.hand.append(self.deck.getSpecificCard(10,3))
+		self.assertTrue(evaluator.isFullHouse(openCards+self.hand))
 
 	def test_flush(self):
 		print "test_flush"
-		pass
+		openCards = []
+		openCards.append(self.deck.getSpecificCard(3,3))
+		openCards.append(self.deck.getSpecificCard(7,3))
+		openCards.append(self.deck.getSpecificCard(10,2)) 
+		openCards.append(self.deck.getSpecificCard(8,3)) 
+		openCards.append(self.deck.getSpecificCard(13,3))
+		self.hand.append(self.deck.getSpecificCard(4,2))
+		self.hand.append(self.deck.getSpecificCard(10,3))
+		self.assertTrue(evaluator.isFlush(openCards+self.hand))
 
 	def test_straight(self):
 		print "test_straight"

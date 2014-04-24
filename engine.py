@@ -3,7 +3,8 @@ import copy
 import evaluator
 
 class Card:
-	rankString = ["Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"]
+	# 14 is ace for comparison simplicity
+	rankString = ["2","3","4","5","6","7","8","9","10","Jack","Queen","King","Ace"]
 	suitString = ["clubs","diamonds","hearts","spades"]
 
 	def __init__(self,rank,suit):
@@ -11,7 +12,19 @@ class Card:
 		self.suit = suit
 
 	def __repr__(self):
-		return self.rankString[self.rank-1] + " of " + self.suitString[self.suit-1]
+		return self.rankString[self.rank-2] + " of " + self.suitString[self.suit]
+
+	# so collections can operate on it
+	def __hash__(self):
+		return (self.rank*10) + self.suit
+
+	def __cmp__(self,other):
+		if self.rank > other.rank:
+			return 1
+		elif self.rank < other.rank:
+			return -1
+		else:
+			return 0
 
 
 class Deck:
@@ -30,8 +43,8 @@ class Deck:
 
 	def reset(self):
 		del self.deck[:] # clears the list
-		for rank in xrange(1,14):
-			for suit in xrange(1,5):
+		for rank in xrange(2,15):
+			for suit in xrange(0,4):
 				self.deck.append(Card(rank,suit))
 		random.shuffle(self.deck)
 
@@ -198,7 +211,7 @@ class Table:
 	# optional bet parameter (if folding or calling, bet is optional)
 	def processPlayerAction(self,player,action,bet = 0):
 		player.lastAction = action # common no matter what the action is
-		bet = int(bet)
+		# bet = int(bet)
 		self.actionPosition = self.incrementPosition(self.actionPosition,len(self.currentPlayers))
 		if action == "fold":
 			# don't change previousBet
