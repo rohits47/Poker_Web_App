@@ -202,7 +202,7 @@ class Table:
 	def endHand(self):
 		winningPlayer = self.currentPlayers[0]
 		while len(self.currentPlayers) > 1:
-			print self.currentPlayers
+			# print self.currentPlayers
 			winner = evaluator.determineWinningHand(winningPlayer.hand,self.currentPlayers[1].hand,self.openCards)
 			if winner == 1:
 				del self.currentPlayers[1] # remove losing player
@@ -210,7 +210,8 @@ class Table:
 				winningPlayer = self.currentPlayers[1]
 				del self.currentPlayers[0] # remove losing player
 		winningPlayer.stack += self.pot
-		self.reset() # cleanup state for next hand
+		return winningPlayer.name
+		# self.reset() # cleanup state for next hand
 
 	def endBettingRound(self):
 		for player in self.currentPlayers:

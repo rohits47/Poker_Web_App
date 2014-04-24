@@ -18,6 +18,14 @@ table.addPlayer("opponent5")
 @app.route('/', methods=['POST', 'GET'])
 def index():
 	if request.method == "POST":
+		if 'new_hand' in request.form:
+			currPlayer = table.currentPlayers[-1] # add player with 
+			table.reset()
+			table.startHand()
+			for player in table.currentPlayers:
+				table.processPlayerAction(player,"call")
+			table.endBettingRound()
+			return render_template("game.html",player=currPlayer,table=table)
 		if table.round == 0:
 			currPlayer = table.addPlayer(request.form['player']) # add player with given name
 			table.startHand()
@@ -26,6 +34,7 @@ def index():
 			table.endBettingRound()
 			return render_template("game.html",player=currPlayer,table=table)
 		if table.round == 1:
+			# return str(request.form) 
 			currPlayer = table.currentPlayers[-1] # add player with 
 			table.processPlayerAction(currPlayer,"raise",int(request.form['bet']))
 			table.showFlop()
@@ -51,9 +60,11 @@ def index():
 			return render_template("game.html",player=currPlayer,table=table)
 		if table.round == 4:
 			currPlayer = table.currentPlayers[-1] # add player with 
+			name = table.endHand()
+			table.round += 1
 			# table.reset()
 			# table.startHand()
-			return render_template("game.html",player=currPlayer,table=table)
+			return render_template("game.html",player=currPlayer,table=table,winningPlayer=name)
 	return render_template("index.html")
 
 @app.route('/game', methods=['POST', 'GET'])
