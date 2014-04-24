@@ -29,6 +29,10 @@ The only computationally complex part of the app, the hand evaluator needs to be
 
 Didn't finish the hand comparator last week, so I'm finishing that this week along with a proper working GUI. For the comparator, I think I'm gonna try test-driven development properly, both to see what it's like and because it's fairly straightforward with the comparator.
 
+### Action processing
+
+## Week 4
+
 
 
 future work:

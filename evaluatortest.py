@@ -48,6 +48,9 @@ class PokerTestCase(unittest.TestCase):
 		openCards.append(self.deck.getSpecificCard(3,2)) # irrelevant card
 		self.hand.append(self.deck.getSpecificCard(9,2))
 		self.hand.append(self.deck.getSpecificCard(9,3))
+		self.opponentsHand.append(self.deck.getSpecificCard(4,2))
+		self.opponentsHand.append(self.deck.getSpecificCard(4,0))
+		self.assertEqual(evaluator.determineWinningHand(self.hand,self.opponentsHand,openCards),1)
 		self.assertTrue(evaluator.isQuads(openCards+self.hand))
 
 	def test_fullHouse(self):
@@ -60,6 +63,9 @@ class PokerTestCase(unittest.TestCase):
 		openCards.append(self.deck.getSpecificCard(3,2)) # irrelevant card
 		self.hand.append(self.deck.getSpecificCard(9,2))
 		self.hand.append(self.deck.getSpecificCard(10,3))
+		self.opponentsHand.append(self.deck.getSpecificCard(2,2))
+		self.opponentsHand.append(self.deck.getSpecificCard(2,0))
+		self.assertEqual(evaluator.determineWinningHand(self.hand,self.opponentsHand,openCards),1)
 		self.assertTrue(evaluator.isFullHouse(openCards+self.hand))
 
 	def test_flush(self):
@@ -72,6 +78,9 @@ class PokerTestCase(unittest.TestCase):
 		openCards.append(self.deck.getSpecificCard(13,3))
 		self.hand.append(self.deck.getSpecificCard(4,2))
 		self.hand.append(self.deck.getSpecificCard(10,3))
+		self.opponentsHand.append(self.deck.getSpecificCard(3,2))
+		self.opponentsHand.append(self.deck.getSpecificCard(7,0))
+		self.assertEqual(evaluator.determineWinningHand(self.hand,self.opponentsHand,openCards),1)
 		self.assertTrue(evaluator.isFlush(openCards+self.hand))
 
 	def test_straight(self):
@@ -84,6 +93,9 @@ class PokerTestCase(unittest.TestCase):
 		openCards.append(self.deck.getSpecificCard(13,3))
 		self.hand.append(self.deck.getSpecificCard(6,2))
 		self.hand.append(self.deck.getSpecificCard(7,3))
+		self.opponentsHand.append(self.deck.getSpecificCard(7,2))
+		self.opponentsHand.append(self.deck.getSpecificCard(8,0))
+		self.assertEqual(evaluator.determineWinningHand(self.hand,self.opponentsHand,openCards),1)
 		self.assertTrue(evaluator.isStraight(openCards+self.hand))
 
 	def test_triple(self):
@@ -94,9 +106,12 @@ class PokerTestCase(unittest.TestCase):
 		openCards.append(self.deck.getSpecificCard(5,2)) 
 		openCards.append(self.deck.getSpecificCard(10,0)) 
 		openCards.append(self.deck.getSpecificCard(13,3))
-		self.hand.append(self.deck.getSpecificCard(4,2))
-		self.hand.append(self.deck.getSpecificCard(4,3))
-		self.assertTrue(evaluator.isTriple(openCards+self.hand))
+		self.hand.append(self.deck.getSpecificCard(3,2))
+		self.hand.append(self.deck.getSpecificCard(5,3))
+		self.opponentsHand.append(self.deck.getSpecificCard(4,2))
+		self.opponentsHand.append(self.deck.getSpecificCard(4,0))
+		self.assertEqual(evaluator.determineWinningHand(self.hand,self.opponentsHand,openCards),-1)
+		self.assertTrue(evaluator.isTriple(openCards+self.opponentsHand))
 
 	def test_twoPair(self):
 		print "test_twoPair"

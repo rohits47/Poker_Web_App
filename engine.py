@@ -241,11 +241,11 @@ class Table:
 
 	def processComputerAction(self,player):
 		actionList = ["fold",  "call",  "raise",  "check",  "allin"]
-		if previousBet == 0:
+		if self.previousBet == 0:
 			actionList.remove("fold") # stupid to fold if no bet
 			actionList.remove("call") # can't call no bet
 			actionList.remove("allin") # just to make a better game
-		if previousBet > 0:
+		if self.previousBet > 0:
 			actionList.remove("check") # can't check if there's a bet
 			actionList.remove("allin") # just to make a better game
 		action = random.choice(actionList)
