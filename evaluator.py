@@ -11,7 +11,6 @@ from collections import Counter
 
 # notes: the methods here have been written to handle find the best 5-card poker hand from a list of cards of arbitrarily length, i.e. these same functions should theoreticall support omaha and other similar poker games unchanged
 
-# issues: will recognize flush and straight as straightflush even if they are seperate
 STRAIGHT_FLUSH = 8
 QUADS = 7
 FULL_HOUSE = 6
@@ -64,7 +63,7 @@ def evaluateHand(hand):
 
 # handOne and handTwo are both 7 cards
 def compareSameHand(handOne,handTwo):
-	return 1 # to be implemented later
+	return 1 if handOne[0].rank > handTwo[0].rank else -1 # to be implemented later
 
 # assumes a flush exists, will return most common suit by default
 def getFlushCards(hand):
