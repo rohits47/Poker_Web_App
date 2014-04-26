@@ -1,54 +1,51 @@
 <!DOCTYPE html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Poker</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="{{ url_for('static', filename='main.css') }}" rel="stylesheet" type="text/css" media="all" />
-        <link href="{{ url_for('static', filename='normalize.css') }}" rel="stylesheet" type="text/css" media="all" />
-        <link href="{{ url_for('static', filename='general.css') }}" rel="stylesheet" type="text/css" media="all" />
-        <script type="text/javascript" src="{{ url_for('static', filename='jquery-2.1.0.min.js') }}"></script>
-        <script type="text/javascript">
-            $( "#player_info" ).click(function() {
-                alert( "Handler for .click() called." );
-            });
-        </script>
-    </head>
-    <body>
-        <div id="player_info">
-            <p>Your hand: {{ player.hand }}</p>
-            <p>Your current bet: {{ player.currentBet }}</p>
-            <p>Your stack: {{ player.stack }}</p>
-            <p>Table pot: {{ table.pot }}</p>
-            <p>Open cards: {{table.openCards}}</p>
-        </div>
-        <div id="table_info">
-            <p>Current round: {{table.round}}</p>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Poker</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="{{ url_for('static', filename='main.css') }}" rel="stylesheet" type="text/css" media="all" />
+		<link href="{{ url_for('static', filename='normalize.css') }}" rel="stylesheet" type="text/css" media="all" />
+		<link href="{{ url_for('static', filename='general.css') }}" rel="stylesheet" type="text/css" media="all" />
+		<script type="text/javascript" src="{{ url_for('static', filename='jquery-2.1.0.min.js') }}"></script>
+		<script type="text/javascript">
+			$( "#player_info" ).click(function() {
+				alert( "Handler for .click() called." );
+			});
+		</script>
+	</head>
+	<body>
+		<div id="player_info">
+			<p>Your hand: {{ player.hand }}</p>
+			<p>Your current bet: {{ player.currentBet }}</p>
+			<p>Your stack: {{ player.stack }}</p>
+			<p>Table pot: {{ table.pot }}</p>
+			<p>Open cards: {{table.openCards}}</p>
+		</div>
+		<div id="table_info">
+			<p>Current round: {{table.round}}</p>
 
-            {% if table.round > 0 %}
-            {% for player in table.currentPlayers %}
-            <p>{{player.name}} action: {{player.lastAction}}</p>
-            {% if table.round == 5 %}
-            <p>{{player.name}} hand: {{player.hand}}</p>
-            {%endif%}
-            {% endfor %}
-            {% endif %}
-            
-            {% if table.round == 5 %}
-            <p>{{winningPlayer}} wins!</p>
-            {% endif %}
+			{% for player in table.currentPlayers %}
+				{% if player.name == actionName %}
+				<p>To act: {{player.name}}, last action: {{player.lastAction}}</p>
+				<form action="processComputer" method="post" id="processComp">
+					<input type="submit" name="process" id="process" value="Process Computer Action"><br />
+				</form>
+				{%else%}
+				<p>{{player.name}}, last action: {{player.lastAction}}</p>
+				{%endif%}
+			{% endfor %}
 
-            <form action="" method="post" id="pokerform">
-                <label for="bet" class="required">Bet (0 to call, -1 to fold)</label>
-                <input type="text" name="bet" id="bet" value="0" tabindex="1"> <br />
+			<form action="processPlayer" method="post" id="pokerform">
+				<input type="text" name="bet_val" id="bet_val" value="0" tabindex="1"> <br />
+				<input type="submit" name="bet" id="bet" value="Bet" tabindex="2"> <br />
 
-                
-                <input type="submit" name="new_hand" id="new_hand" value="New Hand" tabindex="2"> <br />
-               
-
-                <input name="submit" type="submit" value="Submit" />
-            </form>
-        </div>
-    </body>
+				<input name="submit" type="submit" value="Submit" />
+			</form>
+			<form action="reset" method="post" id="reset_table">
+				 <input type="submit" name="new_hand" id="new_hand" value="New Hand"><br />
+			</form>
+		</div>
+	</body>
 </html>

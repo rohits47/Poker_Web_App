@@ -31,6 +31,10 @@ Didn't finish the hand comparator last week, so I'm finishing that this week alo
 
 ### Action processing
 
+In the scope of these four weeks, the game will only support a single user and multiple AIs, but the general action-processing model should expand to support multiple users fairly easily. The only real difference is that a seperate function for processing AI actions exists, that randomly picks an action from the available legal actions. The processing flow for each hand:
+- table starts hand (freeze current players, bet blinds, set action position to one past big blind, and deal cards)
+- gui only lets action position respond with check, call, bet, etc.
+
 ## Week 4
 
 

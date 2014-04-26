@@ -136,6 +136,10 @@ class Table:
 		self.allPlayers.append(p) # player will be dealt in next hand
 		return p
 
+	def getPlayer(self,playerName):
+		player = [p for p in self.allPlayers if p.name == playerName]
+		return p[0]
+
 	def showFlop(self):
 		self.openCards.append(self.deck.getCard())
 		self.openCards.append(self.deck.getCard())
