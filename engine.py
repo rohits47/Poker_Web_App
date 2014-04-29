@@ -106,6 +106,7 @@ class Table:
 		self.bigBlind = 2 # amount to be posted for big blind
 		self.minimumBuyin = 20
 		self.maximumBuyin = 200
+		self.humanPlayer = None
 
 	def __repr__(self):
 		# return self.tableConcise()
@@ -229,10 +230,11 @@ class Table:
 	def processPlayerAction(self,player,action,bet = 0):
 		player.lastAction = action # common no matter what the action is
 		# bet = int(bet)
-		self.actionPosition = self.incrementPosition(self.actionPosition,len(self.currentPlayers))
 		if action == "fold":
 			# don't change previousBet
 			self.currentPlayers.remove(player)
+			# don't change action position, just return
+			return
 		elif action == "call":
 			# don't change previous bet
 			bet = self.previousBet - player.currentBet
@@ -242,6 +244,7 @@ class Table:
 			self.previousBet += bet
 		elif action == "allin":
 			self.playerBet(player,player.stack)
+		self.actionPosition = self.incrementPosition(self.actionPosition,len(self.currentPlayers))
 
 	def processComputerAction(self,player):
 		actionList = ["fold",  "call",  "raise",  "check",  "allin"]
@@ -255,18 +258,20 @@ class Table:
 		action = random.choice(actionList)
 		player.lastAction = action # common no matter what the action is
 		# bet = int(bet)
-		self.actionPosition = self.incrementPosition(self.actionPosition,len(self.currentPlayers))
 		if action == "fold":
 			# don't change previousBet
 			self.currentPlayers.remove(player)
+			# don't change action position, just return
+			return
 		elif action == "call":
 			# don't change previous bet
 			bet = self.previousBet - player.currentBet
 			self.playerBet(player,bet)
 		elif action == "raise":
-			bet = random.randrange(self.bigBlind,player.stack) # bet a random amount from big blind to all in
+			bet = random.randrange(self.bigBlind,player.stack/4) # bet a random amount from big blind to a fourth of stack
 			self.playerBet(player,bet)
 			self.previousBet += bet
 		elif action == "allin":
 			self.playerBet(player,player.stack)
+		self.actionPosition = self.incrementPosition(self.actionPosition,len(self.currentPlayers))
 		# check action has no action associated

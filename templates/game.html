@@ -21,27 +21,31 @@
 			<p>Your current bet: {{ player.currentBet }}</p>
 			<p>Your stack: {{ player.stack }}</p>
 			<p>Table pot: {{ table.pot }}</p>
+			<p>Previous bet: {{table.previousBet}}</p>
 			<p>Open cards: {{table.openCards}}</p>
 		</div>
 		<div id="table_info">
 			<p>Current round: {{table.round}}</p>
 
-			{% for player in table.currentPlayers %}
-				{% if player.name == actionName %}
-				<p>To act: {{player.name}}, last action: {{player.lastAction}}</p>
+			{% for iterPlayer in table.currentPlayers %}
+				{% if iterPlayer.name == actionName and iterPlayer.name != player.name %}
+				<p>To act: {{iterPlayer.name}}, last action: {{iterPlayer.lastAction}}</p>
+				<p>{{iterPlayer.name}}, last bet: {{iterPlayer.currentBet}}</p>
 				<form action="processComputer" method="post" id="processComp">
 					<input type="submit" name="process" id="process" value="Process Computer Action"><br />
 				</form>
 				{%else%}
-				<p>{{player.name}}, last action: {{player.lastAction}}</p>
+				<p>{{iterPlayer.name}}, last action: {{iterPlayer.lastAction}}</p>
+				<p>{{iterPlayer.name}}, last bet: {{iterPlayer.currentBet}}</p>
 				{%endif%}
 			{% endfor %}
 
 			<form action="processPlayer" method="post" id="pokerform">
 				<input type="text" name="bet_val" id="bet_val" value="0" tabindex="1"> <br />
-				<input type="submit" name="bet" id="bet" value="Bet" tabindex="2"> <br />
-
-				<input name="submit" type="submit" value="Submit" />
+				<input type="submit" name="bet" id="bet" value="bet" tabindex="2"> <br />
+				<input type="submit" name="action" id="action" value="call" tabindex="2"> <br />
+				<input type="submit" name="action" id="action" value="raise" tabindex="2"> <br />
+				<input type="submit" name="action" id="action" value="fold" tabindex="2"> <br />
 			</form>
 			<form action="reset" method="post" id="reset_table">
 				 <input type="submit" name="new_hand" id="new_hand" value="New Hand"><br />

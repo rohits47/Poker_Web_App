@@ -11,8 +11,8 @@ class PokerTestCase(unittest.TestCase):
 		self.table.addPlayer("anshuman")
 		self.table.addPlayer("suket")
 		self.table.addPlayer("ray")
-		self.table.addPlayer("siddharth")
-		self.table.addPlayer("pete")
+		# self.table.addPlayer("siddharth")
+		# self.table.addPlayer("pete")
 	
 	# def tearDown(self):
 	# 	self.table = Table()
@@ -78,6 +78,7 @@ class PokerTestCase(unittest.TestCase):
 	def test_fullHand(self):
 		print "testing test_fullHand"
 		self.table.startHand()
+		print self.table
 		self.table.showFlop()
 		lastActionPosition = self.table.actionPosition
 		while self.table.actionPosition != self.table.bigBlindPosition:

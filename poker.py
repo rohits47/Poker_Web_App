@@ -77,24 +77,32 @@ def index():
 @app.route('/game', methods=['POST', 'GET'])
 def game():
 	if request.method == "POST":
-		currPlayer = table.addPlayer(request.form['player_name'])
+		table.humanPlayer = table.addPlayer(request.form['player_name'])
 		table.startHand()
-		playerToAct = self.currentPlayers[table.actionPosition]
-		return render_template("game.html",player=currPlayer,table=table,actionName=playerToAct.name)
-	return 'error'
+		playerToAct = table.currentPlayers[table.actionPosition]
+		return render_template("game.html",player=table.humanPlayer,table=table,actionName=playerToAct.name)
+	# no changes, just general reloading page, no back-end action taken
+	playerToAct = table.currentPlayers[table.actionPosition]
+	return render_template("game.html",player=table.humanPlayer,table=table,actionName=playerToAct.name)
 
 @app.route('/reset', methods=['POST', 'GET'])
 def reset():
 	table.reset()
 	table.startHand()
+	playerToAct = table.currentPlayers[table.actionPosition]
+	return render_template("game.html",player=table.humanPlayer,table=table,actionName=playerToAct.name)
 
 @app.route('/processComputer', methods=['POST', 'GET'])
 def processComputer():
 	table.processComputerAction(table.currentPlayers[table.actionPosition])
+	playerToAct = table.currentPlayers[table.actionPosition]
+	return render_template("game.html",player=table.humanPlayer,table=table,actionName=playerToAct.name)
 
-@app.route('/processComputer', methods=['POST', 'GET'])
+@app.route('/processPlayer', methods=['POST', 'GET'])
 def processPlayer():
-	pass
+	table.processPlayerAction(table.humanPlayer,request.form['action'],request.form['bet_val'])
+	playerToAct = table.currentPlayers[table.actionPosition]
+	return render_template("game.html",player=table.humanPlayer,table=table,actionName=playerToAct.name)
 
 if __name__ == '__main__':
 	app.run(debug=True)
