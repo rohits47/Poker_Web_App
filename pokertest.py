@@ -70,9 +70,9 @@ class PokerTestCase(unittest.TestCase):
 			self.table.processPlayerAction(self.table.currentPlayers[self.table.actionPosition],"call")
 		self.table.processPlayerAction(self.table.currentPlayers[self.table.actionPosition],"check")
 		self.table.endBettingRound()
-		self.assertEqual(self.table.pot,14)
+		self.assertEqual(self.table.pot,10)
 		self.assertEqual(self.table.actionPosition,self.table.smallBlindPosition)
-		self.assertEqual(self.table.round,1)
+		self.assertEqual(self.table.round,2)
 		# print self.table
 
 	def test_fullHand(self):

@@ -37,6 +37,7 @@ In the scope of these four weeks, the game will only support a single user and m
 
 ## Week 4
 
+Fixed the front-end flow for pre-flop betting, but it won't advance. When does the game end a round of betting and continue with opening the next card? If the actionPosition comes around to the original actor (raiser, or original action position) then we're done. Need to add another field to the table.
 
 
 future work:

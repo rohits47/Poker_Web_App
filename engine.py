@@ -3,6 +3,8 @@ import copy
 import evaluator
 from itertools import izip
 
+# known bugs: if dealer folds, doesn't properly put action on first person to dealer's left
+
 class Card:
 	# 14 is ace for comparison simplicity
 	rankString = ["2","3","4","5","6","7","8","9","10","Jack","Queen","King","Ace"]
@@ -97,16 +99,19 @@ class Table:
 		self.deck = Deck()
 		self.openCards = []
 		self.pot = 0
-		self.previousBet = 2
 		self.dealerPosition = 0 # index in the player array
 		self.smallBlindPosition = 1
 		self.bigBlindPosition = 2
 		self.actionPosition = 0 # index in the player array
 		self.round = 0 # the current round of betting (0=preflop,1 = preturn,2=preriver,3=postriver)
 		self.bigBlind = 2 # amount to be posted for big blind
+		self.previousBet = self.bigBlind
 		self.minimumBuyin = 20
 		self.maximumBuyin = 200
 		self.humanPlayer = None
+		self.currentRoundActorPosition = self.actionPosition
+		self.winningPlayer = ""
+		self.winningHand = []
 
 	def __repr__(self):
 		# return self.tableConcise()
@@ -202,6 +207,7 @@ class Table:
 		self.playerBet(self.currentPlayers[self.bigBlindPosition],self.bigBlind)
 		self.dealHands()
 		self.actionPosition = self.incrementPosition(self.bigBlindPosition,len(self.currentPlayers))
+		self.currentRoundActorPosition = self.actionPosition
 
 	# winning player gets pot, check if any player is now out of the hand/table and remove them from the table, and reset for next hand
 	def endHand(self):
@@ -215,16 +221,26 @@ class Table:
 				winningPlayer = self.currentPlayers[1]
 				del self.currentPlayers[0] # remove losing player
 		winningPlayer.stack += self.pot
-		return winningPlayer.name
+		self.winningPlayer = winningPlayer.name
+		self.winningHand = winningPlayer.hand
 		# self.reset() # cleanup state for next hand
 
 	def endBettingRound(self):
 		for player in self.currentPlayers:
-			player.lastAction = "call" # clears lastAction
+			player.lastAction = "" # clears lastAction
 			player.currentBet = 0
 		self.previousBet = 0
-		self.actionPosition = self.incrementPosition(self.dealerPosition,len(self.currentPlayers))
+		self.actionPosition = self.incrementPosition(self.dealerPosition,len(self.currentPlayers)) # action is on first person past dealer still in the pot
+		self.currentRoundActorPosition = self.actionPosition
 		self.round += 1 # increment round
+		if self.round == 1:
+			self.showFlop()
+		elif self.round == 2:
+			self.showTurn()
+		elif self.round == 3:
+			self.showRiver()
+		elif self.round == 4:
+			self.endHand()
 
 	# optional bet parameter (if folding or calling, bet is optional)
 	def processPlayerAction(self,player,action,bet = 0):
@@ -245,16 +261,18 @@ class Table:
 		elif action == "allin":
 			self.playerBet(player,player.stack)
 		self.actionPosition = self.incrementPosition(self.actionPosition,len(self.currentPlayers))
+		if (self.actionPosition == self.currentRoundActorPosition) and action != "raise":
+			self.endBettingRound()
 
 	def processComputerAction(self,player):
-		actionList = ["fold",  "call",  "raise",  "check",  "allin"]
+		actionList = ["fold",  "call",  "raise",  "check"]
+		actionList.remove("raise")
 		if self.previousBet == 0:
 			actionList.remove("fold") # stupid to fold if no bet
 			actionList.remove("call") # can't call no bet
-			actionList.remove("allin") # just to make a better game
 		if self.previousBet > 0:
 			actionList.remove("check") # can't check if there's a bet
-			actionList.remove("allin") # just to make a better game
+			actionList.remove("fold")
 		action = random.choice(actionList)
 		player.lastAction = action # common no matter what the action is
 		# bet = int(bet)
@@ -271,7 +289,10 @@ class Table:
 			bet = random.randrange(self.bigBlind,player.stack/4) # bet a random amount from big blind to a fourth of stack
 			self.playerBet(player,bet)
 			self.previousBet += bet
-		elif action == "allin":
-			self.playerBet(player,player.stack)
+			self.currentRoundActorPosition = self.currentPlayers.index(player)
+		# elif action == "allin":
+		# 	self.playerBet(player,player.stack)
 		self.actionPosition = self.incrementPosition(self.actionPosition,len(self.currentPlayers))
+		if (self.actionPosition == self.currentRoundActorPosition) and action != "raise":
+			self.endBettingRound()
 		# check action has no action associated

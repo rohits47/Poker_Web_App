@@ -82,26 +82,26 @@ def game():
 		playerToAct = table.currentPlayers[table.actionPosition]
 		return render_template("game.html",player=table.humanPlayer,table=table,actionName=playerToAct.name)
 	# no changes, just general reloading page, no back-end action taken
-	playerToAct = table.currentPlayers[table.actionPosition]
+	playerToAct = table.currentPlayers[table.actionPosition] if table.currentPlayers else None
 	return render_template("game.html",player=table.humanPlayer,table=table,actionName=playerToAct.name)
 
 @app.route('/reset', methods=['POST', 'GET'])
 def reset():
 	table.reset()
 	table.startHand()
-	playerToAct = table.currentPlayers[table.actionPosition]
+	playerToAct = table.currentPlayers[table.actionPosition] if table.currentPlayers else None
 	return render_template("game.html",player=table.humanPlayer,table=table,actionName=playerToAct.name)
 
 @app.route('/processComputer', methods=['POST', 'GET'])
 def processComputer():
 	table.processComputerAction(table.currentPlayers[table.actionPosition])
-	playerToAct = table.currentPlayers[table.actionPosition]
+	playerToAct = table.currentPlayers[table.actionPosition] if table.currentPlayers else None
 	return render_template("game.html",player=table.humanPlayer,table=table,actionName=playerToAct.name)
 
 @app.route('/processPlayer', methods=['POST', 'GET'])
 def processPlayer():
 	table.processPlayerAction(table.humanPlayer,request.form['action'],request.form['bet_val'])
-	playerToAct = table.currentPlayers[table.actionPosition]
+	playerToAct = table.currentPlayers[table.actionPosition] if table.currentPlayers else None
 	return render_template("game.html",player=table.humanPlayer,table=table,actionName=playerToAct.name)
 
 if __name__ == '__main__':

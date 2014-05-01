@@ -9,7 +9,9 @@ from collections import Counter
 
 # more general algorithm (naive): take in two hands of two cards each (player hands), and open cards (5 cards). 
 
-# notes: the methods here have been written to handle find the best 5-card poker hand from a list of cards of arbitrarily length, i.e. these same functions should theoreticall support omaha and other similar poker games unchanged
+#issues: same hand comparator doesn't work in all cases, needs to be tested and fixed more
+
+# notes: the methods here have been written to handle find the best 5-card poker hand from a list of cards of arbitrarily length, i.e. these same functions should theoretically support omaha and other similar poker games unchanged
 
 STRAIGHT_FLUSH = 8
 QUADS = 7
@@ -32,6 +34,8 @@ def determineWinningHand(hand1,hand2,openCards):
 	# determine what the best hand is for each set of 7
 	rankHandOne = evaluateHand(handOne)
 	rankHandTwo = evaluateHand(handTwo)
+	# print rankHandOne
+	# print rankHandTwo
 	if rankHandOne > rankHandTwo:
 		return 1
 	elif rankHandOne < rankHandTwo:
@@ -97,11 +101,12 @@ def isFlush(hand):
 	return suitTuple[1] >= 5
 
 def isStraight(hand):
+	hand.sort(key=lambda x:x.rank,reverse=True)
 	rankList = [c.rank for c in hand]
 	for i in range(2,11):
 		# print set(range(i,i+5))
 		# print set(rankList)
-		if set(range(i,i+4)) <= set(rankList):
+		if set(range(i,i+5)) <= set(rankList):
 			return True
 	return False
 

@@ -148,6 +148,23 @@ class PokerTestCase(unittest.TestCase):
 		self.hand.append(self.deck.getSpecificCard(14,2))
 		self.hand.append(self.deck.getSpecificCard(7,3))
 
+	def test_misc(self):
+		print "test_misc"
+		openCards = []
+		openCards.append(self.deck.getSpecificCard(8,1))
+		openCards.append(self.deck.getSpecificCard(10,3))
+		openCards.append(self.deck.getSpecificCard(9,2)) 
+		openCards.append(self.deck.getSpecificCard(9,3)) 
+		openCards.append(self.deck.getSpecificCard(3,3))
+		self.hand.append(self.deck.getSpecificCard(14,2))
+		self.hand.append(self.deck.getSpecificCard(11,3))
+		self.opponentsHand.append(self.deck.getSpecificCard(6,3))
+		self.opponentsHand.append(self.deck.getSpecificCard(6,2))
+		# print self.hand
+		# print self.opponentsHand
+		# print openCards
+		self.assertEqual(evaluator.determineWinningHand(self.hand,self.opponentsHand,openCards),-1)
+
 
 if __name__ == '__main__':
 	unittest.main()
