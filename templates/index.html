@@ -5,9 +5,16 @@
         <title>Poker</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='index.css') }}" rel="stylesheet">
     </head>
     <body>
+    <div class="container">
     <form action="game" method="post" id="pokerform">
 
         <label for="comment_author" class="required">Your name</label>
@@ -15,5 +22,6 @@
 
         <input name="submit" type="submit" value="Submit" />
     </form>
+    </div>
     </body>
 </html>

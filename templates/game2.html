@@ -1,19 +1,87 @@
-<<!DOCTYPE html>
-<html>
-<head>
-	<title>Poker</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-</head>
-<body>
-<!-- FOR EACH PLAYER -->
-	<div class="player"></div>
-	<div id="table">
-		<div id="cards">
-			
-		</div>
-		<div id="pot_size">
-			
-		</div>
-	</div>
-</body>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="shortcut icon" href="../../assets/ico/favicon.ico"> -->
+
+    <title>Poker</title>
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='general.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+
+  
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Table</h1>
+        <p>Table pot: {{ table.pot }}</p>
+		<!-- <p>Previous bet: {{table.previousBet}}</p> -->
+		<p>Open cards: {{table.openCards}}</p>
+        <!-- <p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p> -->
+        {% if table.round == 4 %}
+        <p>{{table.winningPlayer}} wins with {{table.winningHand}}</p>
+        {%endif%}
+        <p><a class="btn btn-default" href="reset" role="button">New Hand</a></p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+      {% for iterPlayer in table.currentPlayers %}
+        <div class="col-md-4">
+          <h2>{{iterPlayer.name}}</h2>
+          <p>{{iterPlayer.name}}, current bet: {{iterPlayer.currentBet}}</p>
+          <p>{{iterPlayer.name}}, last action: {{iterPlayer.lastAction}}</p>
+          {% if iterPlayer.name == player.name %}
+          <p>{{iterPlayer.name}}, hand: {{iterPlayer.hand}}</p>
+          {% if iterPlayer.name == actionName %}
+          {% if table.previousBet > 0 %}
+          <form action="processPlayer" method="post" id="pokerform">
+			<input type="text" name="bet_val" id="bet_val" value="0" tabindex="1"> <br />
+			<input type="submit" name="action" id="action" value="raise" tabindex="2"> <br />
+			<input type="submit" name="action" id="action" value="call" tabindex="3"> <br />
+			<input type="submit" name="action" id="action" value="fold" tabindex="2"> <br />
+		   </form>
+		  {%else%}
+		  <form action="processPlayer" method="post" id="pokerform">
+			<input type="text" name="bet_val" id="bet_val" value="0" tabindex="1"> <br />
+			<input type="submit" name="action" id="action" value="raise" tabindex="2"> <br />
+			<input type="submit" name="action" id="action" value="check" tabindex="2"> <br />
+		   </form>
+		  {%endif%} 
+          {%endif%}
+          {%endif%}
+          {% if iterPlayer.name == actionName and iterPlayer.name != player.name %}
+          <p><a class="btn btn-default" href="processComputer" role="button">Process Computer Action</a></p>
+          {%endif%}
+        </div>
+      {%endfor%}
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; CS 242 Spring 2014</p>
+      </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  </body>
 </html>

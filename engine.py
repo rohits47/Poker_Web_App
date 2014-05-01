@@ -178,7 +178,10 @@ class Table:
 		self.round = 0
 		del self.openCards[:] # clear open cards
 		self.actionPosition = 0
+		self.previousBet = self.bigBlind
 		self.deck.reset()
+		self.winningPlayer = ""
+		self.winningHand = []
 		self.allPlayers = [p for p in self.allPlayers if p.stack > 0] # remove empty stack players
 		for player in self.allPlayers:
 			player.reset()
@@ -223,6 +226,7 @@ class Table:
 		winningPlayer.stack += self.pot
 		self.winningPlayer = winningPlayer.name
 		self.winningHand = winningPlayer.hand
+		self.actionPosition = 0
 		# self.reset() # cleanup state for next hand
 
 	def endBettingRound(self):
@@ -258,8 +262,9 @@ class Table:
 		elif action == "raise":
 			self.playerBet(player,bet)
 			self.previousBet += bet
-		elif action == "allin":
-			self.playerBet(player,player.stack)
+			self.currentRoundActorPosition = self.currentPlayers.index(player)
+		# elif action == "allin":
+		# 	self.playerBet(player,player.stack)
 		self.actionPosition = self.incrementPosition(self.actionPosition,len(self.currentPlayers))
 		if (self.actionPosition == self.currentRoundActorPosition) and action != "raise":
 			self.endBettingRound()
