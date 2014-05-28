@@ -1,4 +1,4 @@
-Poker_CS242
+Poker
 ===========
 
-Poker web app for CS 242 Final Project
+A simple poker web app and simple AI under development.

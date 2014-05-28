@@ -39,6 +39,10 @@ In the scope of these four weeks, the game will only support a single user and m
 
 Fixed the front-end flow for pre-flop betting, but it won't advance. When does the game end a round of betting and continue with opening the next card? If the actionPosition comes around to the original actor (raiser, or original action position) then we're done. Need to add another field to the table.
 
+## Summer development
+
+The assignment as it stands now is fine for the scope of the class it was written for. I plan to develop it further for my own interest and to learn more about Poker AI, now that the boring structure part is over and I can focus on building an AI. I might also flesh out the front-end and make it a full-fledge, playable multi-player poker app if I get enough time to work on it.
+
 
 future work:
 - side pots
