@@ -43,8 +43,26 @@ Fixed the front-end flow for pre-flop betting, but it won't advance. When does t
 
 The assignment as it stands now is fine for the scope of the class it was written for. I plan to develop it further for my own interest and to learn more about Poker AI, now that the boring structure part is over and I can focus on building an AI. I might also flesh out the front-end and make it a full-fledge, playable multi-player poker app if I get enough time to work on it.
 
+### AI
 
-future work:
+What are the requirement of a competitive poker ai?
+- must now the current strength/ranking of its hand (i.e. nuts, second best, etc.)
+- must know probability of drawing to a "good" hand
+- must have a range for each opponents hand, and narrow range as much as reasonable
+
+How can we go about accomplishing these requirements?
+- current strength evaluator
+	- what do I have now vs. what's possible with what's already open
+- possible strength evaluator
+	- what is the probability to improve (to nuts, second best, etc.)
+
+### Modifications (both planned and in development)
+
+#### Configuration page before starting table (planned)
+- decide if antes exist and their size, increasing blinds, and size of blinds, max and min stack size and buy-in size, re-buyins allows, cash or tournament style, max table size
+
+
+other future work:
 - side pots
 - antes
 - omaha/multiple flops
