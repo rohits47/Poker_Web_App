@@ -42,7 +42,11 @@
       <div class="row">
       {% for iterPlayer in table.currentPlayers %}
         <div class="col-md-4">
+          {% if iterPlayer.name == dealerName %}
+          <h2>Dealer: {{iterPlayer.name}}</h2>
+          {%else%}
           <h2>{{iterPlayer.name}}</h2>
+          {%endif%}
           <p>{{iterPlayer.name}}, current bet: {{iterPlayer.currentBet}}</p>
           <p>{{iterPlayer.name}}, last action: {{iterPlayer.lastAction}}</p>
           {% if iterPlayer.name == player.name %}

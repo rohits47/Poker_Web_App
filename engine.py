@@ -227,6 +227,7 @@ class Table:
 		self.winningPlayer = winningPlayer.name
 		self.winningHand = winningPlayer.hand
 		self.actionPosition = 0
+		self.dealerPosition = 0
 		# self.reset() # cleanup state for next hand
 
 	def endBettingRound(self):
