@@ -1,7 +1,7 @@
 import random
 import copy
 import evaluator
-from itertools import izip
+
 
 # known bugs: if dealer folds, doesn't properly put action on first person to dealer's left
 
@@ -46,8 +46,8 @@ class Deck:
 
 	def reset(self):
 		del self.deck[:] # clears the list
-		for rank in xrange(2,15):
-			for suit in xrange(0,4):
+		for rank in range(2,15):
+			for suit in range(0,4):
 				self.deck.append(Card(rank,suit))
 		random.shuffle(self.deck)
 

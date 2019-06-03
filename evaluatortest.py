@@ -19,7 +19,7 @@ class PokerTestCase(unittest.TestCase):
 		del self.opponentsHand[:]
 
 	def test_straightFlush(self):
-		print "test_straightFlush"
+		print("test_straightFlush")
 		# straight flush vs. straight flush
 		openCards = []
 		openCards.append(self.deck.getSpecificCard(11,1))
@@ -39,7 +39,7 @@ class PokerTestCase(unittest.TestCase):
 		# print openCards
 
 	def test_quads(self):
-		print "test_quads"
+		print("test_quads")
 		openCards = []
 		openCards.append(self.deck.getSpecificCard(9,0))
 		openCards.append(self.deck.getSpecificCard(9,1))
@@ -54,7 +54,7 @@ class PokerTestCase(unittest.TestCase):
 		self.assertTrue(evaluator.isQuads(openCards+self.hand))
 
 	def test_fullHouse(self):
-		print "test_fullHouse"
+		print("test_fullHouse")
 		openCards = []
 		openCards.append(self.deck.getSpecificCard(9,0))
 		openCards.append(self.deck.getSpecificCard(9,1))
@@ -69,7 +69,7 @@ class PokerTestCase(unittest.TestCase):
 		self.assertTrue(evaluator.isFullHouse(openCards+self.hand))
 
 	def test_flush(self):
-		print "test_flush"
+		print("test_flush")
 		openCards = []
 		openCards.append(self.deck.getSpecificCard(3,3))
 		openCards.append(self.deck.getSpecificCard(7,3))
@@ -84,7 +84,7 @@ class PokerTestCase(unittest.TestCase):
 		self.assertTrue(evaluator.isFlush(openCards+self.hand))
 
 	def test_straight(self):
-		print "test_straight"
+		print("test_straight")
 		openCards = []
 		openCards.append(self.deck.getSpecificCard(3,1))
 		openCards.append(self.deck.getSpecificCard(4,1))
@@ -99,7 +99,7 @@ class PokerTestCase(unittest.TestCase):
 		self.assertTrue(evaluator.isStraight(openCards+self.hand))
 
 	def test_triple(self):
-		print "test_triple"
+		print("test_triple")
 		openCards = []
 		openCards.append(self.deck.getSpecificCard(3,1))
 		openCards.append(self.deck.getSpecificCard(4,1))
@@ -114,7 +114,7 @@ class PokerTestCase(unittest.TestCase):
 		self.assertTrue(evaluator.isTriple(openCards+self.opponentsHand))
 
 	def test_twoPair(self):
-		print "test_twoPair"
+		print("test_twoPair")
 		openCards = []
 		openCards.append(self.deck.getSpecificCard(3,1))
 		openCards.append(self.deck.getSpecificCard(4,1))
@@ -126,7 +126,7 @@ class PokerTestCase(unittest.TestCase):
 		self.assertTrue(evaluator.isTwoPair(openCards+self.hand))
 
 	def test_onePair(self):
-		print "test_onePair"
+		print("test_onePair")
 		openCards = []
 		openCards.append(self.deck.getSpecificCard(3,1))
 		openCards.append(self.deck.getSpecificCard(4,1))
@@ -138,7 +138,7 @@ class PokerTestCase(unittest.TestCase):
 		self.assertTrue(evaluator.isPair(openCards+self.hand))
 
 	def test_highCard(self):
-		print "test_highCard"
+		print("test_highCard")
 		openCards = []
 		openCards.append(self.deck.getSpecificCard(3,1))
 		openCards.append(self.deck.getSpecificCard(4,1))
@@ -149,7 +149,7 @@ class PokerTestCase(unittest.TestCase):
 		self.hand.append(self.deck.getSpecificCard(7,3))
 
 	def test_misc(self):
-		print "test_misc"
+		print("test_misc")
 		openCards = []
 		openCards.append(self.deck.getSpecificCard(8,1))
 		openCards.append(self.deck.getSpecificCard(10,3))

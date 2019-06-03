@@ -19,7 +19,7 @@ class PokerTestCase(unittest.TestCase):
 
 	# verify starting state of table/game
 	def test_startingState(self):
-		print "testing starting state:"
+		print("testing starting state:")
 		self.assertEqual(self.table.pot, 0)
 		self.assertEqual(self.table.dealerPosition, 0)
 		self.assertEqual(self.table.actionPosition, 0)
@@ -28,7 +28,7 @@ class PokerTestCase(unittest.TestCase):
 
 	# verify that currentPlayers updates player objects correctly
 	def test_currentPlayers(self):
-		print "testing currentPlayers list:"
+		print("testing currentPlayers list:")
 		self.table.setCurrentPlayers()
 		self.assertEqual(self.table.allPlayers, self.table.currentPlayers)
 		self.table.currentPlayers[0].stack += 100 # alter player object
@@ -38,7 +38,7 @@ class PokerTestCase(unittest.TestCase):
 
 	# verify that positions increment and overrun properly
 	def test_incrementPosition(self):
-		print "testing incrementPosition:"
+		print("testing incrementPosition:")
 		pos = 3
 		pos = self.table.incrementPosition(pos,6)
 		self.assertEqual(pos,4)
@@ -62,7 +62,7 @@ class PokerTestCase(unittest.TestCase):
 	# verify that player's actions are processed appropriately
 	# tests table.processPlayerAction internally
 	def test_processPlayerAction(self):
-		print "testing processPlayerAction"
+		print("testing processPlayerAction")
 		self.table.startHand()
 		# print self.table
 		lastActionPosition = self.table.actionPosition
@@ -76,9 +76,9 @@ class PokerTestCase(unittest.TestCase):
 		# print self.table
 
 	def test_fullHand(self):
-		print "testing test_fullHand"
+		print("testing test_fullHand")
 		self.table.startHand()
-		print self.table
+		print(self.table)
 		self.table.showFlop()
 		lastActionPosition = self.table.actionPosition
 		while self.table.actionPosition != self.table.bigBlindPosition:
