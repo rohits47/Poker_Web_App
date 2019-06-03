@@ -144,7 +144,7 @@ class Table:
 
 	def getPlayer(self,playerName):
 		player = [p for p in self.allPlayers if p.name == playerName]
-		return p[0]
+		return player[0]
 
 	def showFlop(self):
 		self.openCards.append(self.deck.getCard())
