@@ -35,8 +35,8 @@ class PokerTestCase(unittest.TestCase):
         self.table.currentPlayers[0].stack += 100  # alter player object
         self.table.addPlayer("ishan")  # alter main list
         # make sure currentPlayers holds references
-        self.assertEqual(
-            self.table.allPlayers[0], self.table.currentPlayers[0])
+        self.assertEqual(self.table.allPlayers[0],
+                         self.table.currentPlayers[0])
         self.assertNotEqual(self.table.allPlayers, self.table.currentPlayers)
 
     # verify that positions increment and overrun properly

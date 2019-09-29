@@ -45,6 +45,7 @@ def determineWinningHand(hand1, hand2, openCards):
     else:
         return compareSameHand(handOne, handTwo)
 
+
 # returns the ranking of the given hand (i.e. flush, straight, etc.) or -1 on error
 
 
@@ -69,12 +70,14 @@ def evaluateHand(hand):
         return HIGH_CARD
     return -1
 
+
 # handOne and handTwo are both 7 cards
 
 
 def compareSameHand(handOne, handTwo):
     # to be implemented later
     return 1 if handOne[0].rank > handTwo[0].rank else -1
+
 
 # assumes a flush exists, will return most common suit by default
 
@@ -124,7 +127,7 @@ def isStraight(hand):
     for i in range(2, 11):
         # print set(range(i,i+5))
         # print set(rankList)
-        if set(range(i, i+5)) <= set(rankList):
+        if set(range(i, i + 5)) <= set(rankList):
             return True
     return False
 
