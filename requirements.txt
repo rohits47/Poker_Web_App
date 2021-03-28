@@ -1,4 +1,4 @@
-aiohttp==3.6.1
+aiohttp==3.7.4
 aiomysql==0.0.20
 aiosqlite==0.10.0
 astroid==2.3.0
